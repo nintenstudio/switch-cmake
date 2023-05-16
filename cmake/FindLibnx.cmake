@@ -26,15 +26,17 @@ if(NOT SWITCH)
     message(FATAL_ERROR "This helper can only be used when cross-compiling for the Switch.")
 endif()
 
-set(LIBNX_PATHS ${LIBNX} $ENV{LIBNX} ${DEVKITPRO}/libnx libnx)
+set(LIBNX_PATHS ${DEVKITPRO}/libnx)
+
+message(${LIBNX_PATHS})
 
 find_path(LIBNX_INCLUDE_DIR switch.h
         PATHS ${LIBNX_PATHS}
         PATH_SUFFIXES include)
 
-find_library(LIBNX_LIBRARY NAMES libnx.a
-        PATHS ${LIBNX_PATHS}
-        PATH_SUFFIXES lib)
+find_file(LIBNX_LIBRARY NAMES libnx.a PATHS ${LIBNX_PATHS}/lib) # Cannot use find_library because CMake will not recognize the .a extension when configuring for windows
+
+message(${LIBNX_LIBRARY})
 
 set(LIBNX_INCLUDE_DIRS ${LIBNX_INCLUDE_DIR})
 set(LIBNX_LIBRARIES ${LIBNX_LIBRARY})
